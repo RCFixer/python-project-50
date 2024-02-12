@@ -1,5 +1,6 @@
 import argparse
 import json
+import yaml
 
 __all__ = ('generate_diff',)
 
@@ -52,8 +53,8 @@ def convert_to_string(diff):
 
 
 def generate_diff(file1_path, file2_path):
-    file1 = json.load(open(file1_path))
-    file2 = json.load(open(file2_path))
+    file1 = yaml.load(open(file1_path), Loader=yaml.FullLoader)
+    file2 = yaml.load(open(file2_path), Loader=yaml.FullLoader)
     diff = find_diff(file1, file2)
     sorted_diff = dict(sorted(diff.items(),
                               key=lambda item: item[0][1] or item[0][0]))

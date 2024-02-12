@@ -17,3 +17,11 @@ def test_first_case(expected_result):
     file2 = os.path.join(current_dir_path, 'fixtures/file2.json')
     result = generate_diff(file1, file2)
     assert result == expected_result
+
+
+def test_yaml_case(expected_result):
+    current_dir_path = os.path.dirname(os.path.realpath(__file__))
+    file1 = os.path.join(current_dir_path, 'fixtures/file1.yml')
+    file2 = os.path.join(current_dir_path, 'fixtures/file2.yml')
+    result = generate_diff(file1, file2)
+    assert result == expected_result
