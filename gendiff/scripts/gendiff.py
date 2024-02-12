@@ -1,5 +1,4 @@
 import argparse
-import json
 import yaml
 
 __all__ = ('generate_diff',)
