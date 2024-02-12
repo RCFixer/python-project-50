@@ -5,7 +5,8 @@ __all__ = ('generate_diff',)
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Compares two configuration files'
+    parser = argparse.ArgumentParser(description='Compares two '
+                                                 'configuration files'
                                                  ' and shows a difference.')
     parser.add_argument('file1', metavar='first_file')
     parser.add_argument('file2', metavar='second_file')
@@ -61,4 +62,4 @@ def generate_diff(file1_path, file2_path):
 
 
 if __name__ == '__main__':
-    main(args.file1, args.file2)
+    main()
