@@ -20,7 +20,7 @@ jobs:
         run: |
           make lint
           make tests
-      - name: Test & publish code coverage
+      - name: Test and publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         if: github.ref_name == 'main'
         env:
