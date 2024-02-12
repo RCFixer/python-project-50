@@ -13,7 +13,8 @@ lint:
 	poetry run flake8 gendiff
 
 tests:
-	pytest . tests/
+	poetry run pytest
 
 test-coverage:
-	pytest --cov=gendiff/scripts
+	poetry run coverage run -m pytest
+	poetry run coverage report
