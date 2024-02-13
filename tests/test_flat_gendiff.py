@@ -2,8 +2,7 @@ import os
 
 import pytest
 
-from gendiff.scripts import generate_diff
-
+from gendiff.scripts.gendiff import generate_diff
 
 @pytest.fixture
 def expected_result():

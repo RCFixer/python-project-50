@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from gendiff.scripts import generate_diff
+from gendiff.scripts.gendiff import generate_diff
 
 
 @pytest.fixture
@@ -15,7 +15,6 @@ def expected_result():
             "  group1": {"- baz": "bas", "+ baz": "bars", "  foo": "bar", "- nest": {"key": "value"},
                          "+ nest": "str"}, "- group2": {"abc": 12345, "deep": {"id": 45}},
             "+ group3": {"deep": {"id": {"number": 45}}, "fee": 100500}})
-
 
 
 def test_first_case(expected_result):
