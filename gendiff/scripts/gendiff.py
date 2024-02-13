@@ -1,6 +1,9 @@
 import argparse
 import yaml
 
+from . stylish_format import stylish
+from . plain_format import plain
+
 __all__ = ('generate_diff',)
 
 
@@ -19,26 +22,6 @@ def main():
             print(re)
     elif style_format == 'stylish':
         print(diff)
-
-
-def convert_values(value):
-    if isinstance(value, bool):
-        return str(value).lower()
-    elif value is None:
-        return 'null'
-    return value
-
-
-def convert_plain_values(value):
-    if isinstance(value, bool):
-        return str(value).lower()
-    elif value is None:
-        return 'null'
-    elif isinstance(value, dict):
-        return '[complex value]'
-    elif isinstance(value, str):
-        return f"'{value}'"
-    return value
 
 
 def find_diff(file1, file2):
@@ -60,56 +43,6 @@ def find_diff(file1, file2):
     sorted_result = dict(sorted(result.items(),
                          key=lambda item: item[0][1] or item[0][0]))
     return sorted_result
-
-
-def stylish(diff, indentation=0):
-    result = []
-    spaces = (indentation + 1) * '\t'
-    for key, value in diff.items():
-        match key[0]:
-            case '=':
-                if isinstance(value, dict):
-                    result.append(f'{spaces}  {key[1]}: {stylish(value, indentation + 1)}')
-                else:
-                    result.append(f'{spaces}  {key[1]}: {convert_values(value)}')
-            case '-':
-                if isinstance(value, dict):
-                    result.append(f'{spaces}- {key[1]}: {stylish(value, indentation + 1)}')
-                else:
-                    result.append(f'{spaces}- {key[1]}: {convert_values(value)}')
-            case '+':
-                if isinstance(value, dict):
-                    result.append(f'{spaces}+ {key[1]}: {stylish(value, indentation + 1)}')
-                else:
-                    result.append(f'{spaces}+ {key[1]}: {convert_values(value)}')
-            case _:
-                if isinstance(value, dict):
-                    result.append(f'{spaces}  {key}: {stylish(value, indentation + 1)}')
-                else:
-                    result.append(f'{spaces}  {key}: {convert_values(value)}')
-    if indentation == 0:
-        spaces = ''
-    return '{\n' + '\n'.join(result) + '\n' + spaces + '}'
-
-
-def plain(diff, path=''):
-    result = []
-    for key, value in diff.items():
-        match key[0]:
-            case '=':
-                if isinstance(value, dict):
-                    result.extend(plain(value, path + key[1] + '.'))
-            case '-':
-                if ('+', key[1]) in diff:
-                    result.append(f"Property '{path + key[1]}' was updated."
-                                  f" From {convert_plain_values(value)} to {convert_plain_values(diff[('+', key[1])])}")
-                else:
-                    result.append(f"Property '{path + key[1]}' was removed")
-            case '+':
-                if ('-', key[1]) in diff:
-                    continue
-                result.append(f"Property '{path + key[1]}' was added with value: {convert_plain_values(value)}")
-    return result
 
 
 def generate_diff(file1_path, file2_path, formatter='stylish'):
