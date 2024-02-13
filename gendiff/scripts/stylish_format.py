@@ -9,7 +9,7 @@ def convert_values(value):
 
 def stylish(diff, indentation=0):
     result = []
-    spaces = (indentation + 1) * '    '
+    spaces = (indentation + 1) * 4 * ' '
     for key, value in diff.items():
         match key[0]:
             case '=':
