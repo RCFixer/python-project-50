@@ -11,3 +11,5 @@
 6 stage - https://asciinema.org/a/10hFcAzXixqnzKSgbtTmrZJWo
 
 7 stage - https://asciinema.org/a/2VsUIwgN3Z19ri0Eq3wAmeoXk
+
+8 stage - https://asciinema.org/a/UI7Y95hEBSZX31yEjvhnVbasb

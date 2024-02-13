@@ -1,5 +1,6 @@
 import argparse
 import yaml
+import json
 
 from . stylish_format import stylish
 from . plain_format import plain
@@ -20,7 +21,7 @@ def main():
     if style_format == 'plain':
         for re in diff:
             print(re)
-    elif style_format == 'stylish':
+    elif style_format == 'stylish' or style_format == 'json':
         print(diff)
 
 
@@ -45,13 +46,37 @@ def find_diff(file1, file2):
     return sorted_result
 
 
+def diff_for_json(file1, file2):
+    result = {}
+    for key, value in file1.items():
+        if isinstance(value, dict) and key in file2 and isinstance(file2[key], dict):
+            result[f'  {key}'] = diff_for_json(value, file2[key])
+        elif key in file2 and file2[key] == value:
+            result[f'  {key}'] = value
+        elif key in file2 and file2[key] != value:
+            result[f'- {key}'] = value
+            result[f'+ {key}'] = file2[key]
+        else:
+            result[f'- {key}'] = value
+    if isinstance(file2, dict):
+        for key, value in file2.items():
+            if key not in file1:
+                result[f'+ {key}'] = value
+    sorted_result = dict(sorted(result.items(), key=lambda item: item[0][2:]))
+    return sorted_result
+
+
 def generate_diff(file1_path, file2_path, formatter='stylish'):
     file1 = yaml.load(open(file1_path), Loader=yaml.FullLoader)
     file2 = yaml.load(open(file2_path), Loader=yaml.FullLoader)
-    diff = find_diff(file1, file2)
     if formatter == 'plain':
+        diff = find_diff(file1, file2)
         result = plain(diff)
+    elif formatter == 'json':
+        diff = diff_for_json(file1, file2)
+        result = json.dumps(diff)
     else:
+        diff = find_diff(file1, file2)
         result = stylish(diff)
     return result
 
