@@ -6,8 +6,8 @@ from gendiff.scripts.gendiff import generate_diff
 
 @pytest.fixture
 def expected_result():
-    return '{\n\t- follow: false\n\t  host: hexlet.io\n\t- proxy:' \
-           ' 123.234.53.22\n\t- timeout: 50\n\t+ timeout: 20\n\t+ verbose: true\n}'
+    return '{\n    - follow: false\n      host: hexlet.io\n    - proxy:' \
+           ' 123.234.53.22\n    - timeout: 50\n    + timeout: 20\n    + verbose: true\n}'
 
 
 def test_first_case(expected_result):

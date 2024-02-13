@@ -5,8 +5,6 @@ import json
 from . stylish_format import stylish
 from . plain_format import plain
 
-__all__ = ('generate_diff',)
-
 
 def main():
     parser = argparse.ArgumentParser(description='Compares two '
