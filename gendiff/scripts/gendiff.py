@@ -16,11 +16,7 @@ def main():
     args = parser.parse_args()
     style_format = args.format if args.format else 'stylish'
     diff = generate_diff(args.file1, args.file2, style_format)
-    if style_format == 'plain':
-        for re in diff:
-            print(re)
-    elif style_format == 'stylish' or style_format == 'json':
-        print(diff)
+    print(diff)
 
 
 def find_diff(file1, file2):
@@ -69,7 +65,7 @@ def generate_diff(file1_path, file2_path, formatter='stylish'):
     file2 = yaml.load(open(file2_path), Loader=yaml.FullLoader)
     if formatter == 'plain':
         diff = find_diff(file1, file2)
-        result = plain(diff)
+        result = '\n'.join(plain(diff))
     elif formatter == 'json':
         diff = diff_for_json(file1, file2)
         result = json.dumps(diff)
